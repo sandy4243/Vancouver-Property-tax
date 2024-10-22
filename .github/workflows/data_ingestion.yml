@@ -1,0 +1,28 @@
+name: Automate Property Tax Data Ingestion
+
+on:
+  schedule:
+    # Runs at 00:00 UTC every day (adjust this as needed)
+    - cron: '0 0 * * *'
+  workflow_dispatch:  # Allows manual triggering of the workflow
+
+jobs:
+  ingest:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.x'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Run Ingestion Script
+        run: python ingest_property_tax.py
